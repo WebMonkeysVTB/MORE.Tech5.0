@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Department } from './types';
 import './App.css';
+
 declare let ymaps: any;
 
 function App() {
   let latitude = 55.76;
   let longitude = 37.64;
+  
+  const [departments, setDepartments] = useState<Department[]>([]);
 
   function init() {
-
     navigator.geolocation.getCurrentPosition(function(location) {
       latitude = location.coords.latitude;
       longitude = location.coords.longitude;
@@ -24,6 +27,8 @@ function App() {
       // от 0 (весь мир) до 19.
       zoom: 12
     });
+
+    
   }
 
   console.log(latitude, longitude);
