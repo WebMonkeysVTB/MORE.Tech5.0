@@ -14,6 +14,7 @@ export type Department = {
       "juridical": boolean;
       "Prime": boolean
     };
+    "workload"?: string;
     "coordinates": {
       "latitude": number | string;
       "longitude": number | string;
