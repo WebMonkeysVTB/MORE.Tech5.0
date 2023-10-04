@@ -5,7 +5,6 @@ import './App.css';
 import Map from './components/Map';
 import { Button, Checkbox, Modal} from 'antd';
 import { useMemo } from 'react';
-import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 const headerStyle: React.CSSProperties = {
   fontSize: '2em',
@@ -34,7 +33,7 @@ function App() {
   const isRampRef = useRef<boolean>(false);
   const isPrimeRef = useRef<boolean>(false);
   const isPersonRef = useRef<boolean>(false);
-  const isJuridical = useRef<boolean>(false);
+  const isJuridicalRef = useRef<boolean>(false);
 
   const [filters, setFilters] = useState<Special>({
     vipZone: false,
@@ -56,17 +55,13 @@ function App() {
       ramp: isRampRef.current,
       Prime: isPrimeRef.current,
       person: isPersonRef.current,
-      juridical: isJuridical.current
+      juridical: isJuridicalRef.current
     });
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
-  };
-
-  const onChange = (e: CheckboxChangeEvent) => {
-    console.log(`checked = ${e.target.checked}`);
   };
 
   useEffect(() => {
@@ -101,8 +96,8 @@ function App() {
           <Checkbox onChange={() => isVipZoneRef.current = !isVipZoneRef.current}>VIP zone</Checkbox>
           <Checkbox onChange={() => isRampRef.current = !isRampRef.current}>Persons with disabilities</Checkbox>
           <Checkbox onChange={() => isPrimeRef.current = !isPrimeRef.current}>Prime</Checkbox>
-          <Checkbox onChange={onChange}>Juridical person</Checkbox>
-          <Checkbox onChange={onChange}>Natural person</Checkbox>
+          <Checkbox onChange={() => isJuridicalRef.current = !isJuridicalRef.current}>Juridical person</Checkbox>
+          <Checkbox onChange={() => isPersonRef.current = !isPersonRef.current}>Natural person</Checkbox>
         </Modal>
       </header>
 
