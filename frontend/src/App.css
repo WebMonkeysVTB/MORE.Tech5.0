@@ -20,7 +20,25 @@ main {
     height: 100%;
 }
 
-/* .App {
+.headerNavigation {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 
-} */
+.title {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filters {
+    flex-grow: 5;
+    display: flex;
+    justify-content: end;
+    padding-right: 1em;
+    align-items: center;
+}
+
+

@@ -11,7 +11,7 @@ const headerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
   height: 64,
-  paddingInline: 50,
+  // paddingInline: 50,
   lineHeight: '64px',
   backgroundColor: '#7dbcea',
 };
@@ -58,10 +58,13 @@ function App() {
   return (
     <div className="App">
       <header style={headerStyle}>
-        <nav>
-          <Button type="primary" onClick={showModal}>
-            Filters
-          </Button>
+        <nav className='headerNavigation'>
+          <div className='title'>VTB</div>
+          <div className='filters'>
+            <Button type="primary" onClick={showModal}>
+              Filters
+            </Button>
+          </div>
         </nav>
         <Modal title="Basic Modal"centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
           <p>Some contents...</p>
