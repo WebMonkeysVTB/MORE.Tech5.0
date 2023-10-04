@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Department } from './types';
+import React, { useState, useEffect, useRef } from 'react';
+import { Special, Department } from './types';
 import addFakeWorkload from './utils/addFakeWorkload';
 import './App.css';
 import Map from './components/Map';
@@ -29,11 +29,35 @@ function App() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const isVipOfficeRef = useRef<boolean>(false);
+  const isVipZoneRef = useRef<boolean>(false);
+  const isRampRef = useRef<boolean>(false);
+  const isPrimeRef = useRef<boolean>(false);
+  const isPersonRef = useRef<boolean>(false);
+  const isJuridical = useRef<boolean>(false);
+
+  const [filters, setFilters] = useState<Special>({
+    vipZone: false,
+    vipOffice: false,
+    ramp: false,
+    Prime: false,
+    person: false,
+    juridical: false
+  });
+
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
+    setFilters({
+      vipZone: isVipZoneRef.current,
+      vipOffice: isVipOfficeRef.current,
+      ramp: isRampRef.current,
+      Prime: isPrimeRef.current,
+      person: isPersonRef.current,
+      juridical: isJuridical.current
+    });
     setIsModalOpen(false);
   };
 
@@ -53,12 +77,12 @@ function App() {
       
       addFakeWorkload(result); // generate fake workload for each department
       setDepartments(result);
-      console.log('useEffect')
+      console.log('useEffect');
     }
     fetchDepartments();
   }, []);
 
-  const MapComponent = useMemo(() => <Map departments={departments} />, [departments]);
+  const MapComponent = useMemo(() => <Map departments={departments} filters={filters}/>, [departments, filters]);
   
   return (
     <div className="App">
@@ -73,10 +97,10 @@ function App() {
         </nav>
 
         <Modal title="Filter departments"centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <Checkbox onChange={onChange}>VIP office</Checkbox>
-          <Checkbox onChange={onChange}>VIP zone</Checkbox>
-          <Checkbox onChange={onChange}>Persons with disabilities</Checkbox>
-          <Checkbox onChange={onChange}>Prime</Checkbox>
+          <Checkbox onChange={() => isVipOfficeRef.current = !isVipOfficeRef.current}>VIP office</Checkbox>
+          <Checkbox onChange={() => isVipZoneRef.current = !isVipZoneRef.current}>VIP zone</Checkbox>
+          <Checkbox onChange={() => isRampRef.current = !isRampRef.current}>Persons with disabilities</Checkbox>
+          <Checkbox onChange={() => isPrimeRef.current = !isPrimeRef.current}>Prime</Checkbox>
           <Checkbox onChange={onChange}>Juridical person</Checkbox>
           <Checkbox onChange={onChange}>Natural person</Checkbox>
         </Modal>
