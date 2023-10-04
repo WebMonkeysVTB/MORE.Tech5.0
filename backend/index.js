@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
-app.get('/adresses', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get('/addresses', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let response = yield fetch("https://headless-cms3.vtb.ru/projects/atm/models/default/items/departments", {
         "headers": {
             "accept": "application/json, text/plain, */*",

@@ -1,53 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Department } from './types';
 import addFakeWorkload from './utils/addFakeWorkload';
 import './App.css';
-
-declare let ymaps: any;
+import Map from './components/Map';
 
 function App() {
   const [departments, setDepartments] = useState<Department[]>([]);
-  
-  useEffect(() => {
-    let latitude = 55.76;
-    let longitude = 37.64;
 
-    function init() {
-      navigator.geolocation.getCurrentPosition(function(location) {
-        latitude = location.coords.latitude;
-        longitude = location.coords.longitude;
-        console.log(latitude, longitude);
-      });
-      
-      const myMap = new ymaps.Map("map", {
-        // Координаты центра карты.
-        // Порядок по умолчанию: «широта, долгота».
-        // Чтобы не определять координаты центра карты вручную,
-        // воспользуйтесь инструментом Определение координат.
-        center: [latitude, longitude],
-        // Уровень масштабирования. Допустимые значения:
-        // от 0 (весь мир) до 19.
-        zoom: 12
-      });
-      console.error(departments);
-      for (let department of departments) {
-        myMap.geoObjects.add(new ymaps.Placemark(department.coordinates.latitude, department.coordinates.longitude) );
-      }
-    }
+  useEffect(() => {
     async function fetchDepartments() {
       let response = await fetch('http://localhost:3002/addresses');
-      let departments = await response.json() as Department[]; // doesn't contain workload yet
+      let json = await response.json(); // doesn't contain workload yet
+      let result = json.branches as Department[];
       
-      addFakeWorkload(departments); // generate fake workload for each department
-      setDepartments(departments);
+      addFakeWorkload(result); // generate fake workload for each department
+      setDepartments(result);
     }
     fetchDepartments();
-    ymaps.ready(init);
-  }, [departments]);
+  }, []);
   
   return (
     <div className="App">
-      <div id="map"></div>
+      {departments.length !== 0 ? (
+        <Map departments={departments}></Map>
+      ) : (
+        null
+      )}
     </div>
   );
 }

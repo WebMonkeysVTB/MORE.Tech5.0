@@ -18,7 +18,7 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 });
 
-app.get('/adresses', async (req, res) => {
+app.get('/addresses', async (req, res) => {
   let response = await fetch("https://headless-cms3.vtb.ru/projects/atm/models/default/items/departments", {
     "headers": {
       "accept": "application/json, text/plain, */*",
