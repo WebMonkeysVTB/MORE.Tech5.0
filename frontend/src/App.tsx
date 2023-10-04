@@ -3,8 +3,9 @@ import { Department } from './types';
 import addFakeWorkload from './utils/addFakeWorkload';
 import './App.css';
 import Map from './components/Map';
-import { Button, Modal} from 'antd';
+import { Button, Checkbox, Modal} from 'antd';
 import { useMemo } from 'react';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 const headerStyle: React.CSSProperties = {
   fontSize: '2em',
@@ -40,6 +41,10 @@ function App() {
     setIsModalOpen(false);
   };
 
+  const onChange = (e: CheckboxChangeEvent) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+
   useEffect(() => {
     async function fetchDepartments() {
       let response = await fetch('http://localhost:3002/addresses');
@@ -66,12 +71,17 @@ function App() {
             </Button>
           </div>
         </nav>
-        <Modal title="Basic Modal"centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+
+        <Modal title="Filter departments"centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+          <Checkbox onChange={onChange}>VIP office</Checkbox>
+          <Checkbox onChange={onChange}>VIP zone</Checkbox>
+          <Checkbox onChange={onChange}>Persons with disabilities</Checkbox>
+          <Checkbox onChange={onChange}>Prime</Checkbox>
+          <Checkbox onChange={onChange}>Juridical person</Checkbox>
+          <Checkbox onChange={onChange}>Natural person</Checkbox>
         </Modal>
       </header>
+
       <main>
         {departments.length !== 0 ? (
           MapComponent

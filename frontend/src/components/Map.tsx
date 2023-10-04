@@ -23,7 +23,13 @@ function Map({ departments }: MapProps) {
         new ymaps.Placemark(
           [department.coordinates.latitude, department.coordinates.longitude],
           {
-            balloonContent: "цвет <strong>воды пляжа бонди</strong>",
+            balloonContentHeader: department.shortName,
+            // Зададим содержимое основной части балуна.
+            balloonContentBody: `<div>${department.address}</div>`,
+            // Зададим содержимое нижней части балуна.
+            balloonContentFooter: `<div>Физ. лица: ${department.scheduleFl}</div><div>Юр. лица: ${department.scheduleJurL}</div>`,
+            // Зададим содержимое всплывающей подсказки.
+            hintContent: department.shortName
           },
           {
             preset: "islands#icon",
