@@ -11,6 +11,7 @@ import {Route, Routes} from "react-router-dom";
 import MainPage from "./pages/MainPage/MainPage";
 import MapPage from "./pages/MapPage/MapPage";
 import AuthPage from "./pages/AuthPage/AuthPage";
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                     <Route path={'/'} element={<MainPage/>}/>
                     <Route path={'/auth'} element={<AuthPage/>}/>
                     <Route path={'/map'} element={<MapPage/>}/>
+                    <Route path={'*'} element={<NotFoundPage/>}/>
                 </Routes>
             </main>
             <Footer/>
