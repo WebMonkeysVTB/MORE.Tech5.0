@@ -1,6 +1,7 @@
 import express, {Express, Request, Response} from 'express';
 import puppeteer from 'puppeteer';
 import dotenv from 'dotenv';
+import axios from "axios";
 import cors from 'cors';
 
 dotenv.config();
@@ -19,23 +20,8 @@ app.listen(port, () => {
 });
 
 app.get('/addresses', async (req, res) => {
-  let response = await fetch("https://headless-cms3.vtb.ru/projects/atm/models/default/items/departments", {
-    "headers": {
-      "accept": "application/json, text/plain, */*",
-      "accept-language": "en-GB,en;q=0.9,en-US;q=0.8,ru;q=0.7",
-      "sec-ch-ua": "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\"",
-      "sec-ch-ua-mobile": "?0",
-      "sec-ch-ua-platform": "\"Windows\"",
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "same-site",
-      "Referer": "https://online.vtb.ru/",
-      "Referrer-Policy": "strict-origin-when-cross-origin"
-    },
-    "body": null,
-    "method": "GET"
-  });
-  let json = await response.json();
+  const response = await axios.get("https://headless-cms3.vtb.ru/projects/atm/models/default/items/departments")
+  let json = response.data
   res.send(json);
 });
 

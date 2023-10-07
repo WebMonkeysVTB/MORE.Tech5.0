@@ -3,8 +3,9 @@ import {Button, Checkbox, Modal} from "antd";
 import {HeaderStyled, NavStyled, Title, Filters, LinkStyled} from "./Nav.styled"
 import filtersStore from '../../store/FiltersStore'
 import {Link, useLocation} from "react-router-dom";
+import {observer} from "mobx-react-lite";
 
-const Nav = () => {
+const Nav = observer(() => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {
@@ -22,9 +23,11 @@ const Nav = () => {
     return (
         <HeaderStyled>
             <NavStyled>
+
                 <Title>VTB</Title>
                 <Link to={'/'}><LinkStyled>Главная</LinkStyled></Link>
                 <Link to={'/map'}><LinkStyled>Карта</LinkStyled></Link>
+
                 <Filters>
                     {useLocation().pathname === '/map' &&
                         <Button type="primary" onClick={showModal}>
@@ -47,6 +50,6 @@ const Nav = () => {
             </Modal>
         </HeaderStyled>
     );
-};
+});
 
 export default Nav;

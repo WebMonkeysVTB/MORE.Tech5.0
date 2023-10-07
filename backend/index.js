@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const axios_1 = __importDefault(require("axios"));
 const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -26,23 +27,8 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
 app.get('/addresses', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let response = yield fetch("https://headless-cms3.vtb.ru/projects/atm/models/default/items/departments", {
-        "headers": {
-            "accept": "application/json, text/plain, */*",
-            "accept-language": "en-GB,en;q=0.9,en-US;q=0.8,ru;q=0.7",
-            "sec-ch-ua": "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-site",
-            "Referer": "https://online.vtb.ru/",
-            "Referrer-Policy": "strict-origin-when-cross-origin"
-        },
-        "body": null,
-        "method": "GET"
-    });
-    let json = yield response.json();
+    const response = yield axios_1.default.get("https://headless-cms3.vtb.ru/projects/atm/models/default/items/departments");
+    let json = response.data;
     res.send(json);
 }));
 // app.get('/addresses', async (req, res) => {

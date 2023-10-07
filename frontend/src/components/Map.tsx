@@ -1,25 +1,17 @@
-import {useLayoutEffect, useEffect, useState} from "react";
+import {useLayoutEffect, useEffect, useState, FC} from "react";
 import { Special, Department } from "../types";
 import addFakeWorkload from "../utils/addFakeWorkload";
-import filters from '../store/FiltersStore'
+import {observer} from "mobx-react-lite";
+import filters from "../store/FiltersStore";
 
 declare let ymaps: any;
 var myMap: any = null;
 
-function Map() {
-  const [departments, setDepartments] = useState<Department[]>([]);
+interface IMap {
+  departments: Department[],
+}
 
-  useEffect(() => {
-    (async function fetchDepartments() {
-      let response = await fetch('http://localhost:3002/addresses');
-      let json = await response.json(); // doesn't contain workload yet
-      let result = json.branches as Department[];
-
-      addFakeWorkload(result); // generate fake workload for each department
-      setDepartments(result);
-      console.log('useEffect');
-    })()
-  }, []);
+const Map: FC<IMap> = observer(({departments}) => {
 
   const latitude = 55.76;
   const longitude = 37.64;
@@ -83,6 +75,7 @@ function Map() {
   }, [])
   
   useEffect(() => {
+    console.log('refresh filters')
     function init() {
       console.warn(departments);
 
@@ -146,11 +139,11 @@ function Map() {
       });
     }
     ymaps.ready(init);
-  }, [departments, filters]);
+  }, [departments, filters.data]);
 
   return (
     <div id="map"></div>
   )
-}
+})
 
 export default Map;
