@@ -90,7 +90,7 @@ const Map: FC<IMap> = observer(({departments}) => {
         if (filters.ramp && !department.special.ramp) {
           return false;
         }
-        if (filters.prime && !department.special.prime) {
+        if (filters.Prime && !department.special.Prime) {
           return false;
         }
         if (filters.person && !department.special.person) {

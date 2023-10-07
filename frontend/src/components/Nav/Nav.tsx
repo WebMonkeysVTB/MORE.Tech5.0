@@ -43,7 +43,7 @@ const Nav = observer(() => {
                 <Checkbox onChange={() => filtersStore.vipZone = !filtersStore.vipZone}>VIP zone</Checkbox>
                 <Checkbox onChange={() => filtersStore.ramp = !filtersStore.ramp}>Persons with
                     disabilities</Checkbox>
-                <Checkbox onChange={() => filtersStore.prime = !filtersStore.prime}>Prime</Checkbox>
+                <Checkbox onChange={() => filtersStore.Prime = !filtersStore.Prime}>Prime</Checkbox>
                 <Checkbox onChange={() => filtersStore.juridical = !filtersStore.juridical}>Juridical
                     person</Checkbox>
                 <Checkbox onChange={() => filtersStore.person = !filtersStore.person}>Natural person</Checkbox>

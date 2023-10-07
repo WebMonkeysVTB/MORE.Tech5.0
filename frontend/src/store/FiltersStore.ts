@@ -8,7 +8,7 @@ class FiltersStore {
         vipZone: boolean
         vipOffice: boolean
         ramp: boolean
-        prime: boolean
+        Prime: boolean
         person: boolean
         juridical: boolean
     }
@@ -19,7 +19,7 @@ class FiltersStore {
             vipZone: false,
             vipOffice: false,
             ramp: false,
-            prime: false,
+            Prime: false,
             person: false,
             juridical: false,
         }
@@ -52,13 +52,13 @@ class FiltersStore {
         return this.data.ramp
     }
 
-    set prime(prime: boolean) {
+    set Prime(Prime: boolean) {
         this.data = {...this.data}
-        this.data.prime = prime
+        this.data.Prime = Prime
     }
 
-    get prime() {
-        return this.data.prime
+    get Prime() {
+        return this.data.Prime
     }
 
     set person(person: boolean) {

@@ -4,7 +4,7 @@ export type Special = {
   "ramp": boolean;
   "person": boolean;
   "juridical": boolean;
-  "prime": boolean
+  "Prime": boolean
 }
 
 export type Department = {
