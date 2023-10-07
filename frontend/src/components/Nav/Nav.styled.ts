@@ -1,6 +1,7 @@
 import {styled} from "styled-components";
 
 const HeaderStyled = styled.header`
+  z-index: 10;
   font-size: 1.5em;
   text-align: center;
   color: #fff;
