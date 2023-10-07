@@ -1,15 +1,26 @@
-import { useLayoutEffect, useEffect } from "react";
+import {useLayoutEffect, useEffect, useState} from "react";
 import { Special, Department } from "../types";
-
-type MapProps = {
-  departments: Department[];
-  filters: Special;
-};
+import addFakeWorkload from "../utils/addFakeWorkload";
+import filters from '../store/FiltersStore'
 
 declare let ymaps: any;
 var myMap: any = null;
 
-function Map({ departments, filters }: MapProps) {
+function Map() {
+  const [departments, setDepartments] = useState<Department[]>([]);
+
+  useEffect(() => {
+    (async function fetchDepartments() {
+      let response = await fetch('http://localhost:3002/addresses');
+      let json = await response.json(); // doesn't contain workload yet
+      let result = json.branches as Department[];
+
+      addFakeWorkload(result); // generate fake workload for each department
+      setDepartments(result);
+      console.log('useEffect');
+    })()
+  }, []);
+
   const latitude = 55.76;
   const longitude = 37.64;
 
@@ -86,7 +97,7 @@ function Map({ departments, filters }: MapProps) {
         if (filters.ramp && !department.special.ramp) {
           return false;
         }
-        if (filters.Prime && !department.special.Prime) {
+        if (filters.prime && !department.special.prime) {
           return false;
         }
         if (filters.person && !department.special.person) {
