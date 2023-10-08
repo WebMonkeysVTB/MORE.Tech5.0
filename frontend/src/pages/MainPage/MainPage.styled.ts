@@ -99,7 +99,7 @@ const TeamStyled = styled.div`
   top: 0;
   width: 100%;
   height: 100vh;
-  background-color: white;
+  background-color: black;
   z-index: 0;
   display: flex;
   flex-direction: row;
