@@ -6,21 +6,36 @@ import {observer} from "mobx-react-lite";
 import Filters from "../Filters/Filters";
 import MenuIcon from '@mui/icons-material/Menu';
 import gsap from "gsap";
+import AtmsFilters from "../Filters/AtmsFilters";
+import DepartmentsFilters from "../Filters/DepartmentsFilters";
 
 
 const Nav = observer(() => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDepartmentsModalOpen, setIsDepartmentsModalOpen] = useState(false);
+    const [isAtmsModalOpen, setIsAtmsModalOpen] = useState(false);
 
-    const showModal = () => {
-        setIsModalOpen(true);
+    const showDepartmentsModal = () => {
+        setIsDepartmentsModalOpen(true);
     };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
+    const handleDepartmentsOk = () => {
+        setIsDepartmentsModalOpen(false);
     };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
+    const handleDepartmentsCancel = () => {
+        setIsDepartmentsModalOpen(false);
+    };
+
+    const showAtmsModal = () => {
+        setIsAtmsModalOpen(true);
+    };
+
+    const handleAtmsOk = () => {
+        setIsAtmsModalOpen(false);
+    };
+
+    const handleAtmsCancel = () => {
+        setIsAtmsModalOpen(false);
     };
 
     const tl = gsap.timeline()
@@ -74,8 +89,11 @@ const Nav = observer(() => {
             <Container
                 $showFilter={useLocation().pathname === '/map'}
             >
-                <Button className={"filters"} type="primary" onClick={showModal}>
-                    Фильтры
+                <Button type="primary" onClick={showDepartmentsModal}>
+                    Фильтр отделений
+                </Button>
+                <Button type="primary" onClick={showAtmsModal}>
+                    Фильтр банкоматов
                 </Button>
 
                 <MenuIcon
@@ -94,8 +112,13 @@ const Nav = observer(() => {
                 <Link className={"link"} to={"/"}>Главная</Link>
                 <Link className={"link"} to={'/map'}>Карта</Link>
             </DropDown>
-            <Modal title="Filter departments" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <Filters/>
+
+            <Modal title="Filter departments" centered open={isDepartmentsModalOpen} onOk={handleDepartmentsOk} onCancel={handleDepartmentsCancel}>
+                <AtmsFilters/>
+            </Modal>
+
+            <Modal title="Filter ATMs" centered open={isAtmsModalOpen} onOk={handleAtmsOk} onCancel={handleAtmsCancel}>
+                <DepartmentsFilters/>
             </Modal>
         </HeaderStyled>
     );

@@ -11,11 +11,18 @@ from database import get_async_session
 from .sql_crud import get_departments
 from schemas import Office, Atm
 
+from starlette.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-
-'host/api/deleteasdgjksdfjkdfs'
 @app.delete('/api/delete/{ticket: str}')
 async def pop(ticket: str):
     pass

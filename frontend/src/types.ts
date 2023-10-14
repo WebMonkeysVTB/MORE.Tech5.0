@@ -1,10 +1,10 @@
 export type Special = {
-  "vipZone": boolean;
-  "vipOffice": boolean;
-  "ramp": boolean;
-  "person": boolean;
-  "juridical": boolean;
-  "Prime": boolean
+    "vipZone": boolean;
+    "vipOffice": boolean;
+    "ramp": boolean;
+    "person": boolean;
+    "juridical": boolean;
+    "Prime": boolean
 }
 
 export type Department = {
@@ -17,8 +17,8 @@ export type Department = {
     "scheduleJurL": string;
     "special": Special;
     "workload"?: string;
-    "coordinates": {
-      "latitude": number | string;
-      "longitude": number | string;
-    }
+
+    "latitude": number | string;
+    "longitude": number | string;
+
 };
