@@ -1,6 +1,7 @@
 import React from 'react';
 import {Checkbox} from "antd";
 import departmentsFiltersStore from "../../store/DepartmentsFiltersStore";
+import Button from "../../ui/Button/Button";
 
 const DepartmentsFilters = () => {
     return (

@@ -1,8 +1,8 @@
 import {useLayoutEffect, useEffect, useState, FC} from "react";
-import {Special, Department} from "../types";
-import addFakeWorkload from "../utils/addFakeWorkload";
+import {Special, Department} from "../../types";
+import addFakeWorkload from "../../utils/addFakeWorkload";
 import {observer} from "mobx-react-lite";
-import filters from "../store/FiltersStore";
+import filters from "../../store/FiltersStore";
 
 declare let ymaps: any;
 var myMap: any = null;

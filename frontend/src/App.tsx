@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {Special, Department} from './types';
 import addFakeWorkload from './utils/addFakeWorkload';
 import './App.css';
-import Map from './components/Map';
+import Map from './components/Map/Map';
 import {Button, Checkbox, Modal} from 'antd';
 import {useMemo} from 'react';
 import Nav from "./components/Nav/Nav";

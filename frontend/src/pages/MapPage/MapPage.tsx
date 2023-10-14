@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useMemo, useState} from 'react';
-import Map from "../../components/Map";
+import Map from "../../components/Map/Map";
 import {Department, Special} from "../../types";
 import addFakeWorkload from "../../utils/addFakeWorkload";
 import {MapPageStyled} from "./MapPage.styled";

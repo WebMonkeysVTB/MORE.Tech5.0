@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import gsap from "gsap";
 import AtmsFilters from "../Filters/AtmsFilters";
 import DepartmentsFilters from "../Filters/DepartmentsFilters";
+import {getPathTime} from "../Map/utils";
 
 
 const Nav = observer(() => {
@@ -89,11 +90,11 @@ const Nav = observer(() => {
             <Container
                 $showFilter={useLocation().pathname === '/map'}
             >
-                <Button type="primary" onClick={showDepartmentsModal}>
-                    Фильтр отделений
+                <Button className={"filters"} type="primary" onClick={showDepartmentsModal}>
+                    отделения
                 </Button>
-                <Button type="primary" onClick={showAtmsModal}>
-                    Фильтр банкоматов
+                <Button className={"filters"} type="primary" onClick={showAtmsModal}>
+                    банкоматы
                 </Button>
 
                 <MenuIcon
@@ -114,11 +115,15 @@ const Nav = observer(() => {
             </DropDown>
 
             <Modal title="Filter departments" centered open={isDepartmentsModalOpen} onOk={handleDepartmentsOk} onCancel={handleDepartmentsCancel}>
-                <AtmsFilters/>
+                <Button onClick={() => {
+                    getPathTime([55.76, 37.64], [56, 38])
+                    handleDepartmentsOk()
+                }}>Подобрать оптимальные</Button>
+                <DepartmentsFilters/>
             </Modal>
 
             <Modal title="Filter ATMs" centered open={isAtmsModalOpen} onOk={handleAtmsOk} onCancel={handleAtmsCancel}>
-                <DepartmentsFilters/>
+                <AtmsFilters/>
             </Modal>
         </HeaderStyled>
     );

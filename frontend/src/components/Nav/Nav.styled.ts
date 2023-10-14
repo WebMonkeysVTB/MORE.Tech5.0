@@ -30,7 +30,7 @@ const HeaderStyled = styled.div`
     height: 100%;
     width: auto;
     position: absolute;
-    left: 1em;
+    left: 0;
   }
 `
 
@@ -38,12 +38,14 @@ const Container = styled.div<IContainer>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1em;
+  gap: 5px;
   position: relative;
   height: 100%;
   
   .filters {
     visibility: hidden;
+    font-size: .9em;
+    padding: 2px;
   }
 
   ${props => props.$showFilter && css`
