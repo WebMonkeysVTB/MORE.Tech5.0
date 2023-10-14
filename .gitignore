@@ -31,3 +31,10 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+backend/__pycache__
+backend/app/__pycache__
+backend/venv
+backend/migrations/env.py
+backend/migrations/__pycache__
+backend/migrations/versions/__pycache__
+
