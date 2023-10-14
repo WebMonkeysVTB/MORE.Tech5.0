@@ -1,24 +1,41 @@
-export type Special = {
-    "vipZone": boolean;
-    "vipOffice": boolean;
-    "ramp": boolean;
-    "person": boolean;
-    "juridical": boolean;
-    "Prime": boolean
+
+
+export interface IDepartment {
+    type: "department" | "atm";
+    "id": number | string;
+    salePointName: string;
+    address: string;
+    city: string;
+    status: string;
+    openHours: string;
+    openHoursIndividual: string;
+    rko: string;
+    officeType: string;
+    salePointFormat: string;
+    suoAvailability: boolean;
+    hasRamp: boolean;
+    latitude: number;
+    longitude: number;
+    metroStation: string;
+    myBranch: boolean;
+    kep: boolean;
 }
 
-export type Department = {
-    "id": number | string;
-    "Biskvit_id": number | string;
-    "shortName": string;
-    "address": string;
-    "city": string;
-    "scheduleFl": string;
-    "scheduleJurL": string;
-    "special": Special;
-    "workload"?: string;
 
-    "latitude": number | string;
-    "longitude": number | string;
+export interface IAtm  {
+    type: "department" | "atm";
+    id: number;
+    address: string;
+    latitude: number;
+    longitude: number;
+    allDay: boolean;
+    wheelchair: boolean;
+    blind: boolean;
+    nfcForBankCards: boolean;
+    qrRead: boolean;
+    supportsUsd: boolean;
+    supportsChargeRub: boolean;
+    supportsEur: boolean;
+    supportsRub: boolean;
+}
 
-};

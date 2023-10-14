@@ -115,10 +115,12 @@ const Nav = observer(() => {
             </DropDown>
 
             <Modal title="Filter departments" centered open={isDepartmentsModalOpen} onOk={handleDepartmentsOk} onCancel={handleDepartmentsCancel}>
+
                 <Button onClick={() => {
                     getPathTime([55.76, 37.64], [56, 38])
                     handleDepartmentsOk()
                 }}>Подобрать оптимальные</Button>
+
                 <DepartmentsFilters/>
             </Modal>
 

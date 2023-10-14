@@ -1,18 +1,38 @@
 import {useLayoutEffect, useEffect, useState, FC} from "react";
-import {Special, Department} from "../../types";
-import addFakeWorkload from "../../utils/addFakeWorkload";
 import {observer} from "mobx-react-lite";
 import filters from "../../store/FiltersStore";
+import departmentsStore from "../../store/DepartmentsStore";
+import atmsStore from "../../store/AtmsStore";
+import {signUpQueue} from '../../api';
+
+interface IDepartment {
+    "id": number | string;
+    salePointName: string;
+    address: string;
+    city: string;
+    status: string;
+    openHours: string;
+    openHoursIndividual: string;
+    rko: string;
+    officeType: string;
+    salePointFormat: string;
+    suoAvailability: boolean;
+    hasRamp: boolean;
+    latitude: number;
+    longitude: number;
+    metroStation: string;
+    myBranch: boolean;
+    kep: boolean;
+}
 
 declare let ymaps: any;
 var myMap: any = null;
 
 interface IMap {
-    departments: Department[],
-    atms: any[],
+
 }
 
-const Map: FC<IMap> = observer(({departments, atms}) => {
+const Map: FC<IMap> = observer(() => {
 
     const latitude = 55.76;
     const longitude = 37.64;
@@ -79,23 +99,44 @@ const Map: FC<IMap> = observer(({departments, atms}) => {
         console.log('refresh filters')
 
         function init() {
-            const mapObjects = ymaps.geoQuery([...departments, ...atms].map(department => {
-                return new ymaps.Placemark(
-                    [department.latitude, department.longitude],
-                    {
-                        balloonContentHeader: department.shortName,
-                        // Зададим содержимое основной части балуна.
-                        balloonContentBody: `<div>${department.address}</div>`,
-                        // Зададим содержимое нижней части балуна.
-                        balloonContentFooter: `<div><button>Записаться</button><button>Загружен</button></div>`,
-                        // Зададим содержимое всплывающей подсказки.
-                        hintContent: department.shortName
-                    },
-                    {
-                        preset: "islands#icon",
-                        iconColor: "#0095b6",
-                    }
-                )
+            let mapObjects = ymaps.geoQuery([...departmentsStore.data, ...atmsStore.data].map((store, index) => {
+                if (store.type == "department") {
+                    const color = '#0095b6'
+                    return new ymaps.Placemark(
+                        [store.latitude, store.longitude],
+                        {
+                            balloonContentHeader: "Отделение",
+                            // Зададим содержимое основной части балуна.
+                            balloonContentBody: `<div>${store.address}</div>`,
+                            // Зададим содержимое нижней части балуна.
+                            balloonContentFooter: `<div><button onclick="signUpQueue('department', store.id)">Записаться</button><button>Загружен</button></div>`,
+                            // Зададим содержимое всплывающей подсказки.
+                            hintContent: "Отделение"
+                        },
+                        {
+                            preset: "islands#icon",
+                            iconColor: color,
+                        }
+                    )
+                } else {
+                    const color = '#9900b6'
+                    return new ymaps.Placemark(
+                        [store.latitude, store.longitude],
+                        {
+                            balloonContentHeader: "Банкомат",
+                            // Зададим содержимое основной части балуна.
+                            balloonContentBody: `<div>${store.address}</div>`,
+                            // Зададим содержимое нижней части балуна.
+                            balloonContentFooter: `<div><button onclick="signUpQueue('atm', store.id)">Записаться</button><button>Загружен</button></div>`,
+                            // Зададим содержимое всплывающей подсказки.
+                            hintContent: "Банкомат"
+                        },
+                        {
+                            preset: "islands#icon",
+                            iconColor: color,
+                        }
+                    )
+                }
             }));
 
             myMap.geoObjects.removeAll();
@@ -112,10 +153,12 @@ const Map: FC<IMap> = observer(({departments, atms}) => {
                 // Оставшиеся объекты будем удалять с карты.
                 mapObjects.remove(visibleObjects).removeFromMap(myMap);
             });
+
+
         }
 
         ymaps.ready(init);
-    }, [departments, filters.data]);
+    }, [departmentsStore.data, atmsStore.data]);
 
     return (
         <div id="map"></div>

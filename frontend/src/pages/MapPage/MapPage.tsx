@@ -1,38 +1,36 @@
 import React, {FC, useEffect, useMemo, useState} from 'react';
 import Map from "../../components/Map/Map";
-import {Department, Special} from "../../types";
-import addFakeWorkload from "../../utils/addFakeWorkload";
 import {MapPageStyled} from "./MapPage.styled";
+import departmentsFiltersStore from '../../store/DepartmentsFiltersStore';
+import atmsFiltersStore from '../../store/AtmsFiltersStore';
+import { observer } from 'mobx-react-lite';
+import {fetchAtms, fetchDepartments} from "../../api";
+import departmentsStore from "../../store/DepartmentsStore";
+import atmsStore from "../../store/AtmsStore";
 
 interface IMapPage {
 
 }
 
-const MapPage: FC<IMapPage> = () => {
-    const [departments, setDepartments] = useState<Department[]>([]);
-    const [atms, setAtms] = useState([])
-
+const MapPage: FC<IMapPage> = observer(() => {
     useEffect(() => {
-        (async function fetchDepartments() {
-            let response = await fetch('http://localhost:1234/api/departments');
-            let result = await response.json(); // doesn't contain workload yet
-            setDepartments(result);
-        })();
-        (async function fetchAtms() {
-            let response = await fetch('http://localhost:1234/api/atms');
-            let result = await response.json(); // doesn't contain workload yet
-            setAtms(result);
-        })();
+        (async function () {
+            // console.error(departmentsFiltersStore.data.officeType);
+            console.error(departmentsFiltersStore.data.hasRamp);
+            console.error(atmsFiltersStore.data);
 
-    }, []);
+            await fetchDepartments();
+            await fetchAtms();
+        })();
+    }, [departmentsFiltersStore.data, atmsFiltersStore.data]);
 
-    const MapComponent = useMemo(() => <Map departments={departments} atms={atms}/>, [departments, atms]);
+    const MapComponent = useMemo(() => <Map />, [departmentsStore.data, atmsStore.data]);
 
     return (
         <MapPageStyled>
             {MapComponent}
         </MapPageStyled>
     );
-};
+});
 
 export default MapPage;

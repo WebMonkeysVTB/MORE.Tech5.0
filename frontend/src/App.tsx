@@ -1,10 +1,6 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Special, Department} from './types';
-import addFakeWorkload from './utils/addFakeWorkload';
+import React from 'react';
+
 import './App.css';
-import Map from './components/Map/Map';
-import {Button, Checkbox, Modal} from 'antd';
-import {useMemo} from 'react';
 import Nav from "./components/Nav/Nav";
 import Footer from "./components/Footer/Footer";
 import {Route, Routes} from "react-router-dom";
