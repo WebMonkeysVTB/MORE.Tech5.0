@@ -10,20 +10,23 @@ interface IMapPage {
 
 const MapPage: FC<IMapPage> = () => {
     const [departments, setDepartments] = useState<Department[]>([]);
+    const [atms, setAtms] = useState([])
 
     useEffect(() => {
         (async function fetchDepartments() {
-            let response = await fetch('http://localhost:3002/addresses');
-            let json = await response.json(); // doesn't contain workload yet
-            let result = json.branches as Department[];
-
-            addFakeWorkload(result); // generate fake workload for each department
+            let response = await fetch('http://localhost:1234/api/departments');
+            let result = await response.json(); // doesn't contain workload yet
             setDepartments(result);
-            console.log('useEffect');
-        })()
+        })();
+        (async function fetchAtms() {
+            let response = await fetch('http://localhost:1234/api/atms');
+            let result = await response.json(); // doesn't contain workload yet
+            setAtms(result);
+        })();
+
     }, []);
 
-    const MapComponent = useMemo(() => <Map departments={departments}/>, [departments]);
+    const MapComponent = useMemo(() => <Map departments={departments} atms={atms}/>, [departments, atms]);
 
     return (
         <MapPageStyled>

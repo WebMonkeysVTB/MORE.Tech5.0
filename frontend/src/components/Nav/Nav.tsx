@@ -1,52 +1,124 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import {Button, Checkbox, Modal} from "antd";
-import {HeaderStyled, NavStyled, Title, Filters, LinkStyled} from "./Nav.styled"
-import filtersStore from '../../store/FiltersStore'
+import {HeaderStyled, Container, DropDown, Title, LinkStyled} from "./Nav.styled"
 import {Link, useLocation} from "react-router-dom";
 import {observer} from "mobx-react-lite";
+import Filters from "../Filters/Filters";
+import MenuIcon from '@mui/icons-material/Menu';
+import gsap from "gsap";
+import AtmsFilters from "../Filters/AtmsFilters";
+import DepartmentsFilters from "../Filters/DepartmentsFilters";
+
 
 const Nav = observer(() => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDepartmentsModalOpen, setIsDepartmentsModalOpen] = useState(false);
+    const [isAtmsModalOpen, setIsAtmsModalOpen] = useState(false);
 
-    const showModal = () => {
-        setIsModalOpen(true);
+    const showDepartmentsModal = () => {
+        setIsDepartmentsModalOpen(true);
     };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
+    const handleDepartmentsOk = () => {
+        setIsDepartmentsModalOpen(false);
     };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
+    const handleDepartmentsCancel = () => {
+        setIsDepartmentsModalOpen(false);
     };
+
+    const showAtmsModal = () => {
+        setIsAtmsModalOpen(true);
+    };
+
+    const handleAtmsOk = () => {
+        setIsAtmsModalOpen(false);
+    };
+
+    const handleAtmsCancel = () => {
+        setIsAtmsModalOpen(false);
+    };
+
+    const tl = gsap.timeline()
+
+    const [menuIsOpened, setMenuIsOpened] = useState(false)
+
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    window.addEventListener('resize', () => {
+        setWindowWidth(window.innerWidth)
+    })
+
+    const onMenuClick = useCallback(() => {
+        const isOpened = menuIsOpened
+        setMenuIsOpened(!isOpened)
+
+        if (isOpened) {
+            tl.to('#dropdown', {
+                ease: 'power4',
+                duration: 0.1,
+                display: 'none',
+                opacity: 0,
+                height: 0,
+            })
+        } else {
+            tl.to('#dropdown', {
+                ease: 'power2',
+                duration: .4,
+                display: `flex`,
+                opacity: 1,
+                height: `calc(100vh - 4em)`,
+            })
+        }
+
+    }, [menuIsOpened])
+
+    useEffect(() => {
+        if (windowWidth >= 767) {
+            if (menuIsOpened) {
+                onMenuClick()
+            }
+        }
+    }, [windowWidth])
 
     return (
         <HeaderStyled>
-            <NavStyled>
+            <img src={require('../../images/logo.png')}/>
+            <Container>
+                <Link className={"link"} to={'/'}>Главная</Link>
+                <Link className={"link"} to={'/map'}>Карта</Link>
+            </Container>
+            <Container
+                $showFilter={useLocation().pathname === '/map'}
+            >
+                <Button type="primary" onClick={showDepartmentsModal}>
+                    Фильтр отделений
+                </Button>
+                <Button type="primary" onClick={showAtmsModal}>
+                    Фильтр банкоматов
+                </Button>
 
-                <Title>VTB</Title>
-                <Link to={'/'}><LinkStyled>Главная</LinkStyled></Link>
-                <Link to={'/map'}><LinkStyled>Карта</LinkStyled></Link>
+                <MenuIcon
+                    className={"menu-icon"}
+                    onClick={() => {
+                        onMenuClick()
+                    }}
+                />
+            </Container>
+            <DropDown
+                id={'dropdown'}
+                onClick={() => {
+                    onMenuClick()
+                }}
+            >
+                <Link className={"link"} to={"/"}>Главная</Link>
+                <Link className={"link"} to={'/map'}>Карта</Link>
+            </DropDown>
 
-                <Filters>
-                    {useLocation().pathname === '/map' &&
-                        <Button type="primary" onClick={showModal}>
-                            Filters
-                        </Button>
-                    }
-                    <Link to={'/auth'}><LinkStyled>Вход</LinkStyled></Link>
-                </Filters>
-            </NavStyled>
+            <Modal title="Filter departments" centered open={isDepartmentsModalOpen} onOk={handleDepartmentsOk} onCancel={handleDepartmentsCancel}>
+                <AtmsFilters/>
+            </Modal>
 
-            <Modal title="Filter departments" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <Checkbox onChange={() => filtersStore.vipOffice = !filtersStore.vipOffice}>VIP office</Checkbox>
-                <Checkbox onChange={() => filtersStore.vipZone = !filtersStore.vipZone}>VIP zone</Checkbox>
-                <Checkbox onChange={() => filtersStore.ramp = !filtersStore.ramp}>Persons with
-                    disabilities</Checkbox>
-                <Checkbox onChange={() => filtersStore.Prime = !filtersStore.Prime}>Prime</Checkbox>
-                <Checkbox onChange={() => filtersStore.juridical = !filtersStore.juridical}>Juridical
-                    person</Checkbox>
-                <Checkbox onChange={() => filtersStore.person = !filtersStore.person}>Natural person</Checkbox>
+            <Modal title="Filter ATMs" centered open={isAtmsModalOpen} onOk={handleAtmsOk} onCancel={handleAtmsCancel}>
+                <DepartmentsFilters/>
             </Modal>
         </HeaderStyled>
     );

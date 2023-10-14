@@ -4,14 +4,18 @@ const MainPageStyled = styled.div`
   min-height: calc(100vh - 64px);
   background-color: black;
   color: white;
+  width: 100%;
+  position: relative;
+
 `
 
 const IntroStyled = styled.div`
   font-size: 2vw;
-  height: 200vh;
-  overflow: hidden;
+  height: 150vh;
   position: relative;
+  overflow: hidden;
   background-color: black;
+  width: 100%;
 
 
   img.puzzle {
@@ -73,14 +77,27 @@ const IntroStyled = styled.div`
 `
 const ServiceStyled = styled.div`
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 64px);
   width: 100%;
   background-color: black;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  gap: 2em;
+  overflow: hidden;
+  
+  button {
+    font-size: 1.5em;
+    z-index: 2;
+  }
   
   h1 {
     text-align: center;
     text-shadow: 3px -3px 5px blueviolet;
+    z-index: 2;
   }
   
   div {
@@ -90,6 +107,13 @@ const ServiceStyled = styled.div`
     align-items: center;
     justify-content: center;
     gap: 1em;
+  }
+  
+  img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    min-width: 767px;
   }
 `
 
