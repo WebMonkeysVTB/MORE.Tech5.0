@@ -1,5 +1,7 @@
 import React from 'react';
 import {MainPageStyled, IntroStyled, ServiceStyled, TeamStyled, WindowStyled} from "./MainPage.styled";
+import Button from "../../ui/Button/Button";
+import {useNavigate} from "react-router-dom";
 
 const Intro = () => {
     return (
@@ -13,18 +15,15 @@ const Intro = () => {
 }
 
 const Service = () => {
+    const navigate = useNavigate()
 
     return (
         <ServiceStyled>
+            <img src={require('../../images/puzzle2.png')}/>
             <h1>
                 Сервис для подбора отделения
             </h1>
-            <div>
-                <h3>zxzxc</h3>
-                <h3>zxzxc</h3>
-                <h3>zxzxc</h3>
-                <h3>zxzxc</h3>
-            </div>
+            <Button onClick={() => {navigate('/map')}}>К картам!</Button>
         </ServiceStyled>
     )
 }
