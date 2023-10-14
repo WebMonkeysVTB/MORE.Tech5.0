@@ -3,37 +3,26 @@ import {makeAutoObservable} from "mobx";
 
 class DepartmentsFiltersStore {
     data: {
-        // city: string | null
-        officeType: boolean
+        // officeType: boolean
         hasRamp: boolean
     }
 
     constructor() {
         makeAutoObservable(this);
         this.data = {
-            // city: null,
-            officeType: false,
+            // officeType: false,
             hasRamp: false,
         }
     }
 
-    // set city(city: string | null) {
+    // set officeType(officeType: boolean) {
     //     this.data = {...this.data}
-    //     // this.data.city = city
+    //     this.data.officeType = officeType
     // }
 
-    // get city() {
-    //     return this.data.city
+    // get officeType() {
+    //     return this.data.officeType
     // }
-
-    set officeType(officeType: boolean) {
-        this.data = {...this.data}
-        this.data.officeType = officeType
-    }
-
-    get officeType() {
-        return this.data.officeType
-    }
 
     set hasRamp(hasRamp: boolean) {
         this.data = {...this.data}

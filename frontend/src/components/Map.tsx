@@ -79,7 +79,8 @@ const Map: FC<IMap> = observer(({departments, atms}) => {
         console.log('refresh filters')
 
         function init() {
-            const mapObjects = ymaps.geoQuery([...departments, ...atms].map(department => {
+            const mapObjects = ymaps.geoQuery([...departments, ...atms].map((department, index) => {
+                const color = (index < departments.length) ? '#0095b6' : '#3caa3c'
                 return new ymaps.Placemark(
                     [department.latitude, department.longitude],
                     {
@@ -93,7 +94,7 @@ const Map: FC<IMap> = observer(({departments, atms}) => {
                     },
                     {
                         preset: "islands#icon",
-                        iconColor: "#0095b6",
+                        iconColor: color,
                     }
                 )
             }));
@@ -115,7 +116,7 @@ const Map: FC<IMap> = observer(({departments, atms}) => {
         }
 
         ymaps.ready(init);
-    }, [departments, filters.data]);
+    }, [departments, atms]);
 
     return (
         <div id="map"></div>

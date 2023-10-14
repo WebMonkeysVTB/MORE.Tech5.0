@@ -114,11 +114,11 @@ const Nav = observer(() => {
             </DropDown>
 
             <Modal title="Filter departments" centered open={isDepartmentsModalOpen} onOk={handleDepartmentsOk} onCancel={handleDepartmentsCancel}>
-                <AtmsFilters/>
+                <DepartmentsFilters/>
             </Modal>
 
             <Modal title="Filter ATMs" centered open={isAtmsModalOpen} onOk={handleAtmsOk} onCancel={handleAtmsCancel}>
-                <DepartmentsFilters/>
+                <AtmsFilters/>
             </Modal>
         </HeaderStyled>
     );

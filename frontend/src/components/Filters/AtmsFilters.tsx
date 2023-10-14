@@ -1,8 +1,9 @@
 import React from 'react';
 import {Checkbox} from "antd";
 import atmsFiltersStore from "../../store/AtmsFiltersStore";
+import { observer } from 'mobx-react-lite';
 
-const AtmsFilters = () => {
+const AtmsFilters = observer(() => {
     return (
         <div>
             <Checkbox onChange={() => atmsFiltersStore.wheelchair = !atmsFiltersStore.wheelchair}>Коляска</Checkbox>
@@ -15,6 +16,6 @@ const AtmsFilters = () => {
             <Checkbox onChange={() => atmsFiltersStore.supportsRub = !atmsFiltersStore.supportsRub}>Charge RUB</Checkbox>
         </div>
     );
-};
+});
 
 export default AtmsFilters;
