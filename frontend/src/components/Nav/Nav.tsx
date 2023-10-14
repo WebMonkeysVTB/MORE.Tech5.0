@@ -1,9 +1,9 @@
 import React, {FC, useRef, useState} from 'react';
 import {Button, Checkbox, Modal} from "antd";
-import {HeaderStyled, NavStyled, Title, Filters, LinkStyled} from "./Nav.styled"
-import filtersStore from '../../store/FiltersStore'
+import {HeaderStyled, NavStyled, Title, FiltersStyled, LinkStyled} from "./Nav.styled"
 import {Link, useLocation} from "react-router-dom";
 import {observer} from "mobx-react-lite";
+import Filters from "../Filters/Filters";
 
 const Nav = observer(() => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,25 +28,18 @@ const Nav = observer(() => {
                 <Link to={'/'}><LinkStyled>Главная</LinkStyled></Link>
                 <Link to={'/map'}><LinkStyled>Карта</LinkStyled></Link>
 
-                <Filters>
+                <FiltersStyled>
                     {useLocation().pathname === '/map' &&
                         <Button type="primary" onClick={showModal}>
                             Filters
                         </Button>
                     }
                     <Link to={'/auth'}><LinkStyled>Вход</LinkStyled></Link>
-                </Filters>
+                </FiltersStyled>
             </NavStyled>
 
             <Modal title="Filter departments" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <Checkbox onChange={() => filtersStore.vipOffice = !filtersStore.vipOffice}>VIP office</Checkbox>
-                <Checkbox onChange={() => filtersStore.vipZone = !filtersStore.vipZone}>VIP zone</Checkbox>
-                <Checkbox onChange={() => filtersStore.ramp = !filtersStore.ramp}>Persons with
-                    disabilities</Checkbox>
-                <Checkbox onChange={() => filtersStore.Prime = !filtersStore.Prime}>Prime</Checkbox>
-                <Checkbox onChange={() => filtersStore.juridical = !filtersStore.juridical}>Juridical
-                    person</Checkbox>
-                <Checkbox onChange={() => filtersStore.person = !filtersStore.person}>Natural person</Checkbox>
+                <Filters/>
             </Modal>
         </HeaderStyled>
     );

@@ -45,7 +45,7 @@ const LinkStyled = styled.div`
   }
 `
 
-const Filters = styled.div`
+const FiltersStyled = styled.div`
   flex-grow: 5;
   display: flex;
   justify-content: end;
@@ -56,4 +56,4 @@ const Filters = styled.div`
   }
 `
 
-export {HeaderStyled, NavStyled, Title, Filters, LinkStyled}
+export {HeaderStyled, NavStyled, Title, FiltersStyled, LinkStyled}
