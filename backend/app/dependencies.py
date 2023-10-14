@@ -1,33 +1,144 @@
 import json
+import random
+import uuid
+from json import JSONDecodeError
 from typing import Annotated, Union, Literal, List
+from base64 import urlsafe_b64encode as b64_enc, urlsafe_b64decode as b64_dec
 
-from fastapi import Cookie, Depends, Body
+import httpx
+from fastapi import Cookie, Depends, Body, Path
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 
-from .redis_crud import create_user, get_user
-from .sql_crud import get_departments, get_atms
-from config import REDIS_HOST, REDIS_PORT
-from schemas import Office, BaseOffice, BaseAtm, Atm
+from .redis_crud import create_user, get_user, add_to_queue, rm_from_queue, \
+    get_queue_count
+from .sql_crud import get_departments, get_atms, get_all_cities
+from config import REDIS_HOST, REDIS_PORT, ANALYTICS_URL
+from schemas import Office, BaseOffice, BaseAtm, Atm, ItemTime
 
 from database import get_async_session
 
 
 redis = Redis(host=REDIS_HOST, port=REDIS_PORT)
 
+dep_operations = ['Получить выписку',
+                  'Оформить кредит',
+                  'Закрыть лицевой счет',
+                  'Открыть лицевой счет']
+
+atm_operations = ['Снять наличные',
+                  'Оплатить коммунальные услуги',
+                  'Погасить задолженность']
+
+
+async def get_optional_deps(items: List[ItemTime]):
+    params = []
+    for item in items:
+        data = item.model_dump()
+        data.update({'queueLength': await get_queue_count(redis, 'dep:', item.id)})
+        params.append(data)
+    content = json.dumps(params)
+    headers = {'Content-Type': 'application/json'}
+    resp = httpx.post(url=ANALYTICS_URL, headers=headers, content=content)
+    return resp.json()
+
+
+async def get_optional_atms(items: List[ItemTime]):
+    params = []
+    for item in items:
+        data = item.model_dump()
+        data.update({'queueLength': await get_queue_count(redis, 'atm:', item.id)})
+        params.append(data)
+    content = json.dumps(params)
+    headers = {'Content-Type': 'application/json'}
+    resp = httpx.post(url=ANALYTICS_URL, headers=headers, content=content)
+    return resp.json()
+
 
 async def query_to_str(request: Request):
     return request.query_params
 
 
-async def add_to_department_queue(
-        departmentId: Annotated[int, Body(embed=True)],
-        operation: Annotated[str, Body(embed=True)],
-        exp_time: Annotated[int, Body(embed=True)],
+async def del_from_atm_queue(
+        ticket: Annotated[str, Path()]
 ):
+    try:
 
-    pass
+        payload = json.loads(b64_dec(ticket).decode('utf-8'))
+        if 'id' not in payload.keys():
+            return False
+        ex_ticket = await rm_from_queue(redis,
+                                        prefix='atm:',
+                                        id=payload['id'],
+                                        ticket=ticket)
+        if ex_ticket:
+            return payload
+        return False
+    except JSONDecodeError:
+        return False
+
+
+async def del_from_dep_queue(
+        ticket: str
+        # ticket: Annotated[str, Path()]
+):
+    try:
+
+        payload = json.loads(b64_dec(ticket).decode('utf-8'))
+        if 'id' not in payload.keys():
+            print('id not found in payload')
+            return False
+        ex_ticket = await rm_from_queue(redis,
+                                        prefix='dep:',
+                                        id=payload['id'],
+                                        ticket=ticket)
+        if ex_ticket:
+            return payload
+        print('ticket doesnt exist')
+        return False
+    except JSONDecodeError:
+        print('decode error')
+        return False
+
+
+async def add_to_atm_queue(
+        atm_id: Annotated[int, Body(embed=True)],
+        # operation: Annotated[str, Body(embed=True)],
+        exp_time: Annotated[int, Body(embed=True)] = None,
+):
+    payload = {
+        'uid': uuid.uuid4().hex,
+        'id': atm_id,
+        'op': random.choice(atm_operations),
+        'exp_time': exp_time
+    }
+    ticket = b64_enc(json.dumps(payload).encode('utf-8')).decode('utf-8')
+    await add_to_queue(redis, prefix='atm:', id=atm_id, ticket=ticket)
+    return ticket
+
+
+async def add_to_dep_queue(
+        department_id: Annotated[int, Body(embed=True)],
+        # operation: Annotated[str, Body(embed=True)],
+        exp_time: Annotated[int, Body(embed=True)] = None,
+):
+    payload = {
+        'uid': uuid.uuid4().hex,
+        'id': department_id,
+        'op': random.choice(dep_operations),
+        'exp_time': exp_time
+    }
+    ticket = b64_enc(json.dumps(payload).encode('utf-8')).decode('utf-8')
+    await add_to_queue(redis, prefix='dep:', id=department_id, ticket=ticket)
+    return ticket
+
+
+async def get_cities(
+        query: str = Depends(query_to_str),
+        db: AsyncSession = Depends(get_async_session)
+):
+    return await get_all_cities(db)
 
 
 async def get_atms_by(

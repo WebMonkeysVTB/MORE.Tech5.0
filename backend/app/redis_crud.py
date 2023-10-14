@@ -1,15 +1,27 @@
 import datetime
 import uuid
+from base64 import urlsafe_b64encode as b64_enc, urlsafe_b64decode as b64_dec
 
 from redis.asyncio import Redis
 
 
-async def get_queue_position(redis: Redis, ticket: str):
-    pass
+async def get_queue_count(redis: Redis, prefix: str, id: int):
+    return await redis.scard(f'{prefix}{id}')
 
 
-async def add_to_office_queue(redis: Redis, ):
-    pass
+async def rm_from_queue(redis: Redis, prefix: str, id: int, ticket: str) -> str:
+    ismember = await redis.sismember(f'{prefix}{id}', ticket)
+    if ismember == 0:
+        return False
+    if ismember == 1:
+        await redis.srem(f'{prefix}{id}', ticket)
+        #todo something else
+        return ticket
+
+
+async def add_to_queue(redis: Redis, prefix: str, id: int, ticket: str) -> str:
+    # todo something else
+    await redis.sadd(f'{prefix}{id}', ticket)
 
 
 async def update_user(redis: Redis, uid, data):

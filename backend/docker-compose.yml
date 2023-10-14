@@ -1,5 +1,15 @@
 version: "3.9"
 services:
+  redis:
+    image: redis:7.2.1-alpine
+    container_name: redis_queue
+    restart: always
+    env_file:
+      - .env-prod
+    ports:
+      - '6378:6379'
+    networks:
+      - local-net
   db:
     image: postgres:14.8-alpine3.18
     container_name: pgSQL
@@ -24,6 +34,15 @@ services:
       - "1234:8000"
     depends_on:
       - db
+      - analytics
+  analytics:
+    build:
+      context: ./services/analytic
+    container_name: analytics
+    networks:
+      - local-net
+    ports:
+      - "1235:8000"
 
 networks:
   local-net:

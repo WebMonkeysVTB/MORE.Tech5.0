@@ -1,7 +1,12 @@
-from models import Office as DbOffice, ATM as DbATM
+from models import Office as DbOffice, ATM as DbATM, City
 # from schemas import Office as SchOffice
 from sqlalchemy import select, Column
 from sqlalchemy.ext.asyncio import AsyncSession
+
+
+async def get_all_cities(db: AsyncSession):
+    query = select(City.name)
+    return (await db.execute(query)).scalars().all()
 
 
 async def get_departments(db: AsyncSession, **kwargs):
