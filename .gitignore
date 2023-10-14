@@ -12,7 +12,6 @@ node_modules
 .pnp.js
 .idea
 package-lock.json
-*.jpg
 
 # testing
 coverage
