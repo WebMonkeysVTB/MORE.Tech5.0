@@ -1,4 +1,4 @@
-import {Special} from "../types";
+
 import {makeAutoObservable} from "mobx";
 
 

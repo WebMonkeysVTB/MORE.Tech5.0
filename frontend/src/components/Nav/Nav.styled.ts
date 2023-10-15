@@ -1,27 +1,179 @@
-import {styled} from "styled-components";
+import styled, {css} from "styled-components";
 
-const HeaderStyled = styled.header`
-  font-size: 1.5em;
-  text-align: center;
-  color: #fff;
+interface IContainer {
+    $showFilter?: boolean
+}
+
+
+const HeaderStyled = styled.div`
+  top: 0;
+  left: 0;
+  z-index: 50;
   height: 64px;
-  line-height: 64px;
-  background-color: #7dbcea;
-  position: relative;
+  position: fixed;
+  width: 100vw;
+  background-color: white;
+  border-bottom: 1px solid #01001e;
+  color: #01001e;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 
   @media (max-width: 767px) {
-    font-size: 1em;
+    justify-content: end;
+    padding-right: 1em;
+  }
+
+  img {
+    height: 100%;
+    width: auto;
+    position: absolute;
+    left: 0;
   }
   
-  a {
+`
+
+const Container = styled.div<IContainer>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  height: 100%;
+  
+  .filters {
+    visibility: hidden;
+    font-size: .9em;
+    padding: 2px;
+  }
+
+  ${props => props.$showFilter && css`
+      .filters {
+        visibility: visible;
+      }
+  `}
+  
+  .link {
+    padding: 1em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(0, 40, 130);
+    font-size: 1.5em;
+    user-select: none;
     text-decoration: none;
-    color: inherit;
+
+    @media (hover: hover) {
+      &:hover {
+        color: rgb(0, 170, 255);
+        cursor: pointer;
+      }
+    }
+
+    &:active {
+      color: white;
+    }
+
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
+  
+  .qr {
+    height: 100%;
+    width: auto;
+    color: rgb(0,40,130);
+    font-size: initial;
+    
+    @media(hover: hover) {
+      &:hover {
+        color: rgb(0, 170, 255);
+        cursor: pointer;
+      }
+    }
+  }
+  
+  svg.menu-icon {
+    color: #01001e;
+    height: 100%;
+    width: auto;
+    z-index: 15;
+    border-radius: 1em;
+
+    @media (hover: hover) {
+      &:hover {
+        cursor: pointer;
+        color: rgb(0, 170, 255);
+      }
+    }
+
+    &:active {
+      box-shadow: white 0 0 50px;
+    }
+
+    display: none;
+
+    @media (max-width: 767px) {
+      display: initial;
+    }
   }
 `
 
-const NavStyled = styled.nav`
-  display: flex;
-  flex-direction: row;
+const DropDown = styled.div`
+  position: absolute;
+  //height: calc(100vh - 4em);
+  top: 4em;
+  left: 0;
+  height: 0;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  display: none;
+  background-color: rgb(0, 40, 130);
+
+  .link {
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+
+    &:active {
+      color: white;
+    }
+
+    &:focus {
+      color: white;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        cursor: pointer;
+        color: rgb(0, 170, 255);
+      }
+    }
+  }
+
+  .qr {
+    height: 100px;
+    width: auto;
+    color: white;
+    font-size: initial;
+
+    @media(hover: hover) {
+      &:hover {
+        color: rgb(0, 170, 255);
+        cursor: pointer;
+      }
+    }
+  }
 `
 
 const Title = styled.div`
@@ -44,15 +196,4 @@ const LinkStyled = styled.div`
   }
 `
 
-const Filters = styled.div`
-  flex-grow: 5;
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  
-  button {
-    margin-right: .5em;
-  }
-`
-
-export {HeaderStyled, NavStyled, Title, Filters, LinkStyled}
+export {HeaderStyled, Container, DropDown, Title, LinkStyled}

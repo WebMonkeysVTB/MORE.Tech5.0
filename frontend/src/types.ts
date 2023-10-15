@@ -1,24 +1,47 @@
-export type Special = {
-  "vipZone": boolean;
-  "vipOffice": boolean;
-  "ramp": boolean;
-  "person": boolean;
-  "juridical": boolean;
-  "Prime": boolean
+
+interface IAnalytics {
+    decay?: number;
+    pathTime?: number;
+    timeInPath?: number;
+    queueLength?: number;
 }
 
-export type Department = {
+export interface IDepartment extends IAnalytics{
+    type: "department" | "atm";
     "id": number | string;
-    "Biskvit_id": number | string;
-    "shortName": string;
-    "address": string;
-    "city": string;
-    "scheduleFl": string;
-    "scheduleJurL": string;
-    "special": Special;
-    "workload"?: string;
-    "coordinates": {
-      "latitude": number | string;
-      "longitude": number | string;
-    }
-};
+    salePointName: string;
+    address: string;
+    city: string;
+    status: string;
+    openHours: string;
+    openHoursIndividual: string;
+    rko: string;
+    officeType: string;
+    salePointFormat: string;
+    suoAvailability: boolean;
+    hasRamp: boolean;
+    latitude: number;
+    longitude: number;
+    metroStation: string;
+    myBranch: boolean;
+    kep: boolean;
+}
+
+
+export interface IAtm extends IAnalytics {
+    type: "department" | "atm";
+    id: number;
+    address: string;
+    latitude: number;
+    longitude: number;
+    allDay: boolean;
+    wheelchair: boolean;
+    blind: boolean;
+    nfcForBankCards: boolean;
+    qrRead: boolean;
+    supportsUsd: boolean;
+    supportsChargeRub: boolean;
+    supportsEur: boolean;
+    supportsRub: boolean;
+}
+
