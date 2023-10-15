@@ -6,6 +6,7 @@ async function getPathTime(from: number[], to: number[]) {
         {type: 'wayPoint', point: from},
         {type: 'wayPoint', point: to}
     ])
+    console.log(path.getTime())
     return path.getTime()
 }
 

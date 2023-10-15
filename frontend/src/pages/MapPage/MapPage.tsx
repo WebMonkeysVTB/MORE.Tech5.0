@@ -7,6 +7,8 @@ import { observer } from 'mobx-react-lite';
 import {fetchAtms, fetchDepartments} from "../../api";
 import departmentsStore from "../../store/DepartmentsStore";
 import atmsStore from "../../store/AtmsStore";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import coordsStore from "../../store/CoordsStore";
 
 interface IMapPage {
 
@@ -15,10 +17,6 @@ interface IMapPage {
 const MapPage: FC<IMapPage> = observer(() => {
     useEffect(() => {
         (async function () {
-            // console.error(departmentsFiltersStore.data.officeType);
-            console.error(departmentsFiltersStore.data.hasRamp);
-            console.error(atmsFiltersStore.data);
-
             await fetchDepartments();
             await fetchAtms();
         })();
@@ -28,6 +26,10 @@ const MapPage: FC<IMapPage> = observer(() => {
 
     return (
         <MapPageStyled>
+            <RefreshIcon className={'refresh'} onClick={async () => {
+                await fetchDepartments();
+                await fetchAtms();
+            }}/>
             {MapComponent}
         </MapPageStyled>
     );

@@ -3,7 +3,7 @@ import {observer} from "mobx-react-lite";
 import filters from "../../store/FiltersStore";
 import departmentsStore from "../../store/DepartmentsStore";
 import atmsStore from "../../store/AtmsStore";
-import {signUpQueue} from '../../api';
+import coordsStore from "../../store/CoordsStore";
 
 interface IDepartment {
     "id": number | string;
@@ -26,7 +26,8 @@ interface IDepartment {
 }
 
 declare let ymaps: any;
-var myMap: any = null;
+let myMap: any;
+let flag = false;
 
 interface IMap {
 
@@ -34,66 +35,76 @@ interface IMap {
 
 const Map: FC<IMap> = observer(() => {
 
-    const latitude = 55.76;
-    const longitude = 37.64;
+    useEffect(() => {
+        return () => {
+            flag = false;
+            myMap = undefined
+        }
+    }, [])
 
     useLayoutEffect(() => {
-        myMap = new ymaps.Map("map", {
-            center: [latitude, longitude],
-            zoom: 15,
-            controls: ['routePanelControl']
-        }, {
-            searchControlProvider: 'yandex#search'
-        });
-        var control = myMap.controls.get('routePanelControl');
+        if (flag) {
+            console.log("*");
+            myMap.setCenter(coordsStore.coords)
+        } else {
+            myMap = new ymaps.Map("map", {
+                center: coordsStore.coords,
+                zoom: 15,
+                controls: ['routePanelControl']
+            }, {
+                searchControlProvider: 'yandex#search'
+            });
+            var control = myMap.controls.get('routePanelControl');
 
-        // Зададим состояние панели для построения машрутов.
-        control.routePanel.state.set({
-            // Тип маршрутизации.
-            type: 'auto',
-            // Выключим возможность задавать пункт отправления в поле ввода.
-            fromEnabled: true,
-            // Адрес или координаты пункта отправления.
-            // from: 'Москва, Льва Толстого 16',
-            // Включим возможность задавать пункт назначения в поле ввода.
-            toEnabled: true
-            // Адрес или координаты пункта назначения.
-            //to: 'Петербург'
-        });
+            // Зададим состояние панели для построения машрутов.
+            control.routePanel.state.set({
+                // Тип маршрутизации.
+                type: 'auto',
+                // Выключим возможность задавать пункт отправления в поле ввода.
+                fromEnabled: true,
+                // Адрес или координаты пункта отправления.
+                // from: 'Москва, Льва Толстого 16',
+                // Включим возможность задавать пункт назначения в поле ввода.
+                toEnabled: true
+                // Адрес или координаты пункта назначения.
+                //to: 'Петербург'
+            });
 
-        // Зададим опции панели для построения машрутов.
-        control.routePanel.options.set({
-            // Запрещаем показ кнопки, позволяющей менять местами начальную и конечную точки маршрута.
-            allowSwitch: false,
-            // Включим определение адреса по координатам клика.
-            // Адрес будет автоматически подставляться в поле ввода на панели, а также в подпись метки маршрута.
-            reverseGeocoding: true,
-            // Зададим виды маршрутизации, которые будут доступны пользователям для выбора.
-            types: {auto: true, masstransit: true, pedestrian: true}
-        });
+            // Зададим опции панели для построения машрутов.
+            control.routePanel.options.set({
+                // Запрещаем показ кнопки, позволяющей менять местами начальную и конечную точки маршрута.
+                allowSwitch: false,
+                // Включим определение адреса по координатам клика.
+                // Адрес будет автоматически подставляться в поле ввода на панели, а также в подпись метки маршрута.
+                reverseGeocoding: true,
+                // Зададим виды маршрутизации, которые будут доступны пользователям для выбора.
+                types: {auto: true, masstransit: true, pedestrian: true}
+            });
 
-        // Создаем кнопку, с помощью которой пользователи смогут менять местами начальную и конечную точки маршрута.
-        var switchPointsButton = new ymaps.control.Button({
-            data: {content: "Поменять местами", title: "Поменять точки местами"},
-            options: {selectOnClick: false, maxWidth: 160}
-        });
-        // Объявляем обработчик для кнопки.
-        switchPointsButton.events.add('click', function () {
-            // Меняет местами начальную и конечную точки маршрута.
-            control.routePanel.switchPoints();
-        });
-        myMap.controls.add(switchPointsButton);
+            // Создаем кнопку, с помощью которой пользователи смогут менять местами начальную и конечную точки маршрута.
+            var switchPointsButton = new ymaps.control.Button({
+                data: {content: "Поменять местами", title: "Поменять точки местами"},
+                options: {selectOnClick: false, maxWidth: 160}
+            });
+            // Объявляем обработчик для кнопки.
+            switchPointsButton.events.add('click', function () {
+                // Меняет местами начальную и конечную точки маршрута.
+                control.routePanel.switchPoints();
+            });
+            myMap.controls.add(switchPointsButton);
 
-        // Создадим экземпляр элемента управления «поиск по карте»
-        // с установленной опцией провайдера данных для поиска по организациям.
-        var searchControl = new ymaps.control.SearchControl({
-            options: {
-                provider: 'yandex#search'
-            }
-        });
+            // Создадим экземпляр элемента управления «поиск по карте»
+            // с установленной опцией провайдера данных для поиска по организациям.
+            var searchControl = new ymaps.control.SearchControl({
+                options: {
+                    provider: 'yandex#search'
+                }
+            });
 
-        myMap.controls.add(searchControl);
-    }, [])
+            myMap.controls.add(searchControl);
+            flag = true
+        }
+    }, [coordsStore.coords])
 
     useEffect(() => {
         console.log('refresh filters')
@@ -101,15 +112,16 @@ const Map: FC<IMap> = observer(() => {
         function init() {
             let mapObjects = ymaps.geoQuery([...departmentsStore.data, ...atmsStore.data].map((store, index) => {
                 if (store.type == "department") {
-                    const color = '#0095b6'
+                    const color = '#0095b6';
+
                     return new ymaps.Placemark(
                         [store.latitude, store.longitude],
                         {
                             balloonContentHeader: "Отделение",
                             // Зададим содержимое основной части балуна.
-                            balloonContentBody: `<div>${store.address}</div>`,
+                            balloonContentBody: `<div>${store.address}</div><div>Услуга через ~ ${store.decay || "?"} мин</div>`,
                             // Зададим содержимое нижней части балуна.
-                            balloonContentFooter: `<div><button onclick="signUpQueue('department', store.id)">Записаться</button><button>Загружен</button></div>`,
+                            balloonContentFooter: `<div><button onclick='window.location.href = \`/sign_up_department/${store.id}\`'>Записаться</button><button>Загружен</button></div>`,
                             // Зададим содержимое всплывающей подсказки.
                             hintContent: "Отделение"
                         },
@@ -125,9 +137,9 @@ const Map: FC<IMap> = observer(() => {
                         {
                             balloonContentHeader: "Банкомат",
                             // Зададим содержимое основной части балуна.
-                            balloonContentBody: `<div>${store.address}</div>`,
+                            balloonContentBody: `<div>${store.address}</div><div>Услуга через ~ ${store.decay || "?"} мин</div>`,
                             // Зададим содержимое нижней части балуна.
-                            balloonContentFooter: `<div><button onclick="signUpQueue('atm', store.id)">Записаться</button><button>Загружен</button></div>`,
+                            balloonContentFooter: `<div><button onclick='window.location.href = \`/sign_up_atm/${store.id}\`'>Записаться</button><button>Загружен</button></div>`,
                             // Зададим содержимое всплывающей подсказки.
                             hintContent: "Банкомат"
                         },

@@ -47,3 +47,9 @@ class ATM(Base):
     supportsRub = Column(Boolean, nullable=True)
 
 
+class City(Base):
+    __tablename__ = 'cities'
+
+    name = Column(String, primary_key=True)
+
+

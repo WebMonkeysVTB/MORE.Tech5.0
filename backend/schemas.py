@@ -52,6 +52,11 @@ class Atm(BaseAtm):
     latitude: float = None
     longitude: float = None
 
+
+class ItemTime(BaseModel):
+    id: int
+    timeInPath: int
+
 #todo электронная очередь
 #todo QRcode
 #todo Ендпоинты для володи:

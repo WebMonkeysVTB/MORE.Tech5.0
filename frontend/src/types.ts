@@ -1,6 +1,12 @@
 
+interface IAnalytics {
+    decay?: number;
+    pathTime?: number;
+    timeInPath?: number;
+    queueLength?: number;
+}
 
-export interface IDepartment {
+export interface IDepartment extends IAnalytics{
     type: "department" | "atm";
     "id": number | string;
     salePointName: string;
@@ -22,7 +28,7 @@ export interface IDepartment {
 }
 
 
-export interface IAtm  {
+export interface IAtm extends IAnalytics {
     type: "department" | "atm";
     id: number;
     address: string;

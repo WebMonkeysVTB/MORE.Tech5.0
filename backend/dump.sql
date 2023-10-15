@@ -5,7 +5,7 @@
 -- Dumped from database version 11.17
 -- Dumped by pg_dump version 11.17
 
--- Started on 2023-10-14 16:11:16
+-- Started on 2023-10-14 17:52:10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,7 +23,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 196 (class 1259 OID 85407)
+-- TOC entry 196 (class 1259 OID 85440)
 -- Name: alembic_version; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -35,7 +35,7 @@ CREATE TABLE public.alembic_version (
 ALTER TABLE public.alembic_version OWNER TO postgres;
 
 --
--- TOC entry 198 (class 1259 OID 85414)
+-- TOC entry 198 (class 1259 OID 85609)
 -- Name: atms; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -59,7 +59,7 @@ CREATE TABLE public.atms (
 ALTER TABLE public.atms OWNER TO postgres;
 
 --
--- TOC entry 197 (class 1259 OID 85412)
+-- TOC entry 197 (class 1259 OID 85607)
 -- Name: atms_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -74,7 +74,7 @@ CREATE SEQUENCE public.atms_id_seq
 ALTER TABLE public.atms_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2836 (class 0 OID 0)
+-- TOC entry 2844 (class 0 OID 0)
 -- Dependencies: 197
 -- Name: atms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -83,7 +83,19 @@ ALTER SEQUENCE public.atms_id_seq OWNED BY public.atms.id;
 
 
 --
--- TOC entry 200 (class 1259 OID 85425)
+-- TOC entry 199 (class 1259 OID 85618)
+-- Name: cities; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cities (
+    name character varying NOT NULL
+);
+
+
+ALTER TABLE public.cities OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 85628)
 -- Name: offices; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -111,7 +123,7 @@ CREATE TABLE public.offices (
 ALTER TABLE public.offices OWNER TO postgres;
 
 --
--- TOC entry 199 (class 1259 OID 85423)
+-- TOC entry 200 (class 1259 OID 85626)
 -- Name: offices_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -126,8 +138,8 @@ CREATE SEQUENCE public.offices_id_seq
 ALTER TABLE public.offices_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2837 (class 0 OID 0)
--- Dependencies: 199
+-- TOC entry 2845 (class 0 OID 0)
+-- Dependencies: 200
 -- Name: offices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -135,7 +147,7 @@ ALTER SEQUENCE public.offices_id_seq OWNED BY public.offices.id;
 
 
 --
--- TOC entry 2697 (class 2604 OID 85417)
+-- TOC entry 2702 (class 2604 OID 85612)
 -- Name: atms id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -143,7 +155,7 @@ ALTER TABLE ONLY public.atms ALTER COLUMN id SET DEFAULT nextval('public.atms_id
 
 
 --
--- TOC entry 2698 (class 2604 OID 85428)
+-- TOC entry 2703 (class 2604 OID 85631)
 -- Name: offices id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -151,16 +163,16 @@ ALTER TABLE ONLY public.offices ALTER COLUMN id SET DEFAULT nextval('public.offi
 
 
 --
--- TOC entry 2826 (class 0 OID 85407)
+-- TOC entry 2833 (class 0 OID 85440)
 -- Dependencies: 196
 -- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.alembic_version (version_num) VALUES ('9515d9a02546');
+INSERT INTO public.alembic_version (version_num) VALUES ('eb2904f6d00c');
 
 
 --
--- TOC entry 2828 (class 0 OID 85414)
+-- TOC entry 2835 (class 0 OID 85609)
 -- Dependencies: 198
 -- Data for Name: atms; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2567,8 +2579,46 @@ INSERT INTO public.atms (id, address, latitude, longitude, "allDay", wheelchair,
 
 
 --
--- TOC entry 2830 (class 0 OID 85425)
--- Dependencies: 200
+-- TOC entry 2836 (class 0 OID 85618)
+-- Dependencies: 199
+-- Data for Name: cities; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.cities (name) VALUES ('Черноголовка');
+INSERT INTO public.cities (name) VALUES ('Фрязино');
+INSERT INTO public.cities (name) VALUES ('Люберцы');
+INSERT INTO public.cities (name) VALUES ('Солнечногорск');
+INSERT INTO public.cities (name) VALUES ('Химки');
+INSERT INTO public.cities (name) VALUES ('Королев');
+INSERT INTO public.cities (name) VALUES ('Раменское');
+INSERT INTO public.cities (name) VALUES ('Москва');
+INSERT INTO public.cities (name) VALUES ('Подольск');
+INSERT INTO public.cities (name) VALUES ('Дедовск');
+INSERT INTO public.cities (name) VALUES ('Звенигород');
+INSERT INTO public.cities (name) VALUES ('Железнодорожный');
+INSERT INTO public.cities (name) VALUES ('Долгопрудный');
+INSERT INTO public.cities (name) VALUES ('Истра');
+INSERT INTO public.cities (name) VALUES ('Пушкино');
+INSERT INTO public.cities (name) VALUES ('Ивантеевка');
+INSERT INTO public.cities (name) VALUES ('Реутов');
+INSERT INTO public.cities (name) VALUES ('Лобня');
+INSERT INTO public.cities (name) VALUES ('Дзержинский');
+INSERT INTO public.cities (name) VALUES ('Moскoвский');
+INSERT INTO public.cities (name) VALUES ('Балашиха');
+INSERT INTO public.cities (name) VALUES ('Красногорск');
+INSERT INTO public.cities (name) VALUES ('Мытищи');
+INSERT INTO public.cities (name) VALUES ('Домодедово');
+INSERT INTO public.cities (name) VALUES ('Бронницы');
+INSERT INTO public.cities (name) VALUES ('Жуковский');
+INSERT INTO public.cities (name) VALUES ('Видное');
+INSERT INTO public.cities (name) VALUES ('Одинцово');
+INSERT INTO public.cities (name) VALUES ('Москва Лучников переулок');
+INSERT INTO public.cities (name) VALUES ('Щелково');
+
+
+--
+-- TOC entry 2838 (class 0 OID 85628)
+-- Dependencies: 201
 -- Data for Name: offices; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2853,7 +2903,7 @@ INSERT INTO public.offices (id, "salePointName", address, city, status, "openHou
 
 
 --
--- TOC entry 2838 (class 0 OID 0)
+-- TOC entry 2846 (class 0 OID 0)
 -- Dependencies: 197
 -- Name: atms_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2862,8 +2912,8 @@ SELECT pg_catalog.setval('public.atms_id_seq', 2399, true);
 
 
 --
--- TOC entry 2839 (class 0 OID 0)
--- Dependencies: 199
+-- TOC entry 2847 (class 0 OID 0)
+-- Dependencies: 200
 -- Name: offices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2871,7 +2921,7 @@ SELECT pg_catalog.setval('public.offices_id_seq', 278, true);
 
 
 --
--- TOC entry 2700 (class 2606 OID 85411)
+-- TOC entry 2705 (class 2606 OID 85444)
 -- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2880,7 +2930,7 @@ ALTER TABLE ONLY public.alembic_version
 
 
 --
--- TOC entry 2702 (class 2606 OID 85422)
+-- TOC entry 2707 (class 2606 OID 85617)
 -- Name: atms atms_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2889,7 +2939,16 @@ ALTER TABLE ONLY public.atms
 
 
 --
--- TOC entry 2704 (class 2606 OID 85433)
+-- TOC entry 2709 (class 2606 OID 85625)
+-- Name: cities cities_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cities
+    ADD CONSTRAINT cities_pkey PRIMARY KEY (name);
+
+
+--
+-- TOC entry 2711 (class 2606 OID 85636)
 -- Name: offices offices_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2897,7 +2956,7 @@ ALTER TABLE ONLY public.offices
     ADD CONSTRAINT offices_pkey PRIMARY KEY (id);
 
 
--- Completed on 2023-10-14 16:11:16
+-- Completed on 2023-10-14 17:52:10
 
 --
 -- PostgreSQL database dump complete

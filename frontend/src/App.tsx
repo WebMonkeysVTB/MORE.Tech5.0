@@ -8,6 +8,9 @@ import MainPage from "./pages/MainPage/MainPage";
 import MapPage from "./pages/MapPage/MapPage";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import SignUpAtm from "./pages/SignUpAtm/SignUpAtm";
+import SignUpDepartment from "./pages/SignUpDepartment/SignUpDepartment";
+import QrPage from "./pages/QrPage/QrPage";
 
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
                     <Route path={'/'} element={<MainPage/>}/>
                     <Route path={'/auth'} element={<AuthPage/>}/>
                     <Route path={'/map'} element={<MapPage/>}/>
+                    <Route path={'/qr'} element={<QrPage/>}/>
+                    <Route path={'/sign_up_atm/:id'} element={<SignUpAtm/>}/>
+                    <Route path={'/sign_up_department/:id'} element={<SignUpDepartment/>}/>
                     <Route path={'*'} element={<NotFoundPage/>}/>
                 </Routes>
             </main>

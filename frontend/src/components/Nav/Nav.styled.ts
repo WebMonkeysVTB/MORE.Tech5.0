@@ -32,6 +32,7 @@ const HeaderStyled = styled.div`
     position: absolute;
     left: 0;
   }
+  
 `
 
 const Container = styled.div<IContainer>`
@@ -80,7 +81,21 @@ const Container = styled.div<IContainer>`
       display: none;
     }
   }
-
+  
+  .qr {
+    height: 100%;
+    width: auto;
+    color: rgb(0,40,130);
+    font-size: initial;
+    
+    @media(hover: hover) {
+      &:hover {
+        color: rgb(0, 170, 255);
+        cursor: pointer;
+      }
+    }
+  }
+  
   svg.menu-icon {
     color: #01001e;
     height: 100%;
@@ -142,6 +157,20 @@ const DropDown = styled.div`
       &:hover {
         cursor: pointer;
         color: rgb(0, 170, 255);
+      }
+    }
+  }
+
+  .qr {
+    height: 100px;
+    width: auto;
+    color: white;
+    font-size: initial;
+
+    @media(hover: hover) {
+      &:hover {
+        color: rgb(0, 170, 255);
+        cursor: pointer;
       }
     }
   }
