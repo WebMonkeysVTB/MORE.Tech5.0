@@ -29,7 +29,7 @@ docker compose up
 
 ```shell
 npm install
-npm run
+npm start
 ```
 
 Первая установит необходимые зависимости.
